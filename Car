@@ -58,13 +58,40 @@ def get_owner_car_price():
         if page >100:
             break
     return car_data
+def clean_car_data(df):
+    valid_brands = ["ford", "chev", "gmc", "dodge", "ram", "toyota", "honda", "nissan", "mazda", 
+    "vw", "volkswagen", "bmw", "mercedes", "audi", "kia", "hyundai", "jeep", 
+    "subaru", "lexus", "acura", "infiniti", "cadillac", "buick", "lincoln", 
+    "chrysler", "pontiac", "saturn", "volvo", "mitsubishi", "suzuki", "mini", "tesla"]
+    blacklist = ["part out", "parting out", "parts only", "wrecking", "scrap", 
+    "tires", "rims", "wheels", "wanted", "buying", "service", "cash"]
+    print(f"clean {len(df)} data")
+    cleaned_data = []
+    for index, row in df.iterrows():
+        title = str(row['Car title']).strip()
+        price = row['Price']
+        if any(fake in title.lower() for fake in blacklist):
+            continue
+        if price < 500:
+            continue
+        has_year = re.search(r'\b(19|20)\d{2}\b', title)
+        has_brand = any(brand in title.lower() for brand in valid_brands)
+        if re.match(r'^(19|20)\d{2}\b', title):
+            cleaned_data.append(row)
+        elif has_year and has_brand:
+            cleaned_data.append(row)
+        else:
+            print(f"the {title} is not a car")
+            pass
+    return pd.DataFrame(cleaned_data)
 if __name__ == "__main__":
     print(f"Car Price Check ON!") 
     data = get_owner_car_price()
     if data:
         today = datetime.datetime.now().strftime("%Y_%m_%d")
         filename = f"red_deer_{today}_owner_car_price.csv"
-        df = pd.DataFrame(data)
+        df_raw = pd.DataFrame(data)
+        df = clean_car_data(df_raw)
         df_sorted = df.sort_values(by="Price")
         print(f"find {len(df)} cars")
         print(df_sorted)
