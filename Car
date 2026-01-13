@@ -5,6 +5,7 @@ import pandas as pd
 import re
 import datetime
 import random
+import glob
 def get_owner_car_price():
     car_data = []
     catch_link = set()
@@ -64,7 +65,7 @@ def clean_car_data(df):
     "subaru", "lexus", "acura", "infiniti", "cadillac", "buick", "lincoln", 
     "chrysler", "pontiac", "saturn", "volvo", "mitsubishi", "suzuki", "mini", "tesla"]
     blacklist = ["part out", "parting out", "parts only", "wrecking", "scrap", 
-    "tires", "rims", "wheels", "wanted", "buying", "service", "cash"]
+    "tires", "rims", "wheels", "wanted", "buying", "service", "cash","parts"]
     print(f"clean {len(df)} data")
     cleaned_data = []
     for index, row in df.iterrows():
@@ -84,6 +85,22 @@ def clean_car_data(df):
             print(f"the {title} is not a car")
             pass
     return pd.DataFrame(cleaned_data)
+def analysis_data(df_today,today):
+    files = sorted(glob.glob("red_deer_*_owner_car_price.csv"))
+    if len(files) < 2:
+        print(f"not enough data")
+        return
+    prev_file = files[-2]
+    print(f"{prev_file} into the program")
+    df_prev = pd.read_csv(prev_file)
+    new_cars = df_today[~df_today["Link"].isin(df_prev["Link"])]
+    if not new_cars.empty:
+        new_filename = f"red_deer_{today}_new_car_update.csv"
+        new_cols=["Car title","Drive distance","Price","Link"]
+        new_cars[new_cols].to_csv(new_filename, index=False, encoding="utf-8-sig")
+        print(f"find {len(new_cars)} new cars")
+    else:
+        print(f"not have new cars today")
 if __name__ == "__main__":
     print(f"Car Price Check ON!") 
     data = get_owner_car_price()
@@ -97,5 +114,7 @@ if __name__ == "__main__":
         print(df_sorted)
         df_sorted.to_csv(filename, index=False, encoding="utf-8-sig")
         print(f"Today owner car price save as {filename}")
+        analysis_data(df_sorted,today)
+        print(f"data analysis compelete")
     else:
         print(f"FUCK! NO NEW CAR DATA TODAY!")
