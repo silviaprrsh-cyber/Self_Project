@@ -15,3 +15,5 @@ A robust Python-based data tool designed to scrape and clean private-owner car l
 
 ## About the Project
 Developed by Miles Zhang, a student in the AI and Data Analytics (AIDA) program at Red Deer Polytechnic. This project serves as a practical application of data acquisition, cleaning, and database management techniques.
+## Disclaimer
+This project is for learning and research purposes only. Any commercial use is strictly prohibited, and I am not responsible for any disputes arising from its use.
