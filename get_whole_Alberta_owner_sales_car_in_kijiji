@@ -88,12 +88,24 @@ def get_owner_car_price():
     return all_car_data
 def clean_car_data(df):
     valid_brands = ["ford", "chev", "gmc", "dodge", "ram", "toyota", "honda", "nissan", "mazda", 
-                    "vw", "volkswagen", "bmw", "mercedes", "audi", "kia", "hyundai", "jeep", 
-                    "subaru", "lexus", "acura", "infiniti", "cadillac", "buick", "lincoln", 
-                    "chrysler", "pontiac", "saturn", "volvo", "mitsubishi", "suzuki", "mini", 
-                    "tesla", "porsche", "land rover", "range rover"]
+        "vw", "volkswagen", "bmw", "mercedes", "audi", "kia", "hyundai", "hyandai", 
+        "jeep", "subaru", "lexus", "acura", "infiniti", "infinity", "cadillac", 
+        "buick", "lincoln", "chrysler", "pontiac", "saturn", "volvo", "mitsubishi", 
+        "suzuki", "mini", "tesla", "porsche", "land rover", "range rover", "alfa", 
+        "jaguar", "bentley", "genesis", "hummer", "fiat", "smart", "freightliner",
+        "hino", "peterbilt", "kenworth", "isuzu", "international", "sterling",
+        "f150", "f250", "f350", "silverado", "sierra", "tahoe", "yukon", "suburban", 
+        "equinox", "traverse", "explorer", "expedition", "escape", "edge", "rav4", 
+        "crv", "highlander", "4runner", "tacoma", "tundra", "civic", "accord", 
+        "corolla", "camry", "elantra", "santa fe", "tucson", "wrangler", "cherokee", 
+        "caravan", "odyssey", "sienna", "mustang", "camaro", "corvette", "challenger", 
+        "charger", "denali", "ducato", "sprinter", "savana", "savanna", "express"]
     blacklist = ["part out", "parting out", "parts only", "wrecking", "scrap", 
-                 "tires", "rims", "wheels", "wanted", "buying", "canopy", "topper", "junk cars"]
+        "tires", "rims", "wheels", "engine", "transmission", "box only", 
+        "canopy", "topper", "tonneau", "tailgate", "bumper", "mirror",
+        "wanted", "buying", "looking for", "wtb", "cash for cars", 
+        "junk cars", "we buy", "towing", "detailing", "mechanic", 
+        "container", "tank", "trailer", "plow", "parts car"]
     print(f"Cleaning {len(df)} data...")
     cleaned_data = []
     for index, row in df.iterrows():
