@@ -99,7 +99,10 @@ def clean_car_data(df):
         "crv", "highlander", "4runner", "tacoma", "tundra", "civic", "accord", 
         "corolla", "camry", "elantra", "santa fe", "tucson", "wrangler", "cherokee", 
         "caravan", "odyssey", "sienna", "mustang", "camaro", "corvette", "challenger", 
-        "charger", "denali", "ducato", "sprinter", "savana", "savanna", "express"]
+        "charger", "denali", "ducato", "sprinter", "savana", "savanna", "express",
+        "f-150", "f-250", "f-350", "f-450", "cr-v", "pt cruiser", "golf r", 
+        "trailblazer", "enclave", "malibu", "cobalt", "cruze", "focus", "fusion", 
+        "ridgeline", "pathfinder", "dakota", "beetle", "passat", "outlander", "gla"]
     blacklist = ["part out", "parting out", "parts only", "wrecking", "scrap", 
         "tires", "rims", "wheels", "engine", "transmission", "box only", 
         "canopy", "topper", "tonneau", "tailgate", "bumper", "mirror",

@@ -3,7 +3,6 @@ import re
 import datetime
 import os
 from difflib import SequenceMatcher
-
 MASTER_FILENAME = "Alberta_owner_sales_car.csv"
 def clean_km(km_str):
     if pd.isna(km_str) or str(km_str).lower() in ["n/a", "pending", "nan", ""]:
@@ -52,10 +51,15 @@ def process_reposts():
         return
     df['Scrape_Date_DT'] = pd.to_datetime(df['Scrape_Date'], errors='coerce')
     df['Sold_Date_DT'] = pd.to_datetime(df['Sold_Date'], errors='coerce')
-    today_dt = pd.to_datetime(datetime.datetime.now().strftime("%Y-%m-%d"))
+    if df['Scrape_Date_DT'].isnull().all():
+        print("Error: No valid dates found in Scrape_Date.")
+        return
+    today_dt = df['Scrape_Date_DT'].max() 
+    yesterday_dt = today_dt - pd.Timedelta(days=1)
+    print(f"Reference Date (Latest Scrape): {today_dt.strftime('%Y-%m-%d')}")
+    print(f"Comparing against: {yesterday_dt.strftime('%Y-%m-%d')}")
     mask_new = (df["Status"] == "Active") & (df["Scrape_Date_DT"] == today_dt)
     new_candidates = df[mask_new].copy()
-    yesterday_dt = today_dt - datetime.timedelta(days=1)
     mask_sold = (df["Status"] == "Sold") & (df["Sold_Date_DT"] >= yesterday_dt)
     sold_candidates = df[mask_sold].copy()
     print(f"Comparing: {len(sold_candidates)} recently sold (<= 1 day ago) vs {len(new_candidates)} new arrivals.")
